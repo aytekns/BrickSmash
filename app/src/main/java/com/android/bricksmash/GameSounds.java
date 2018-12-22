@@ -6,6 +6,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
+
 public class GameSounds 
 {
 	public final static int	BASE_HIT 		= 1;
@@ -32,7 +33,9 @@ public class GameSounds
 	
 	private GameSounds() 
 	{
-		m_oSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+		m_oSoundPool = new SoundPool.Builder()
+					.setMaxStreams(4)
+					.build();
 		m_oHashMap = new HashMap<>();
 	}
 
