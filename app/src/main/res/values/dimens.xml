@@ -1,0 +1,15 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="action_bar_title_margin">60dp</dimen>
+    <dimen name="sw_keys_height">40dp</dimen>
+    <item format="integer" name="Ball_Avg_Angle" type="integer">2</item>
+    <item format="integer" name="Ball_Low_Angle" type="integer">1</item>
+    <item format="integer" name="Ball_High_Angle" type="integer">3</item>
+    <item format="integer" name="Base_Speed" type="integer">1</item>
+    <item format="integer" name="Bricks_Matrix_Height" type="integer">20</item>
+    <item format="integer" name="Bricks_Matrix_Width" type="integer">9</item>
+    <item format="integer" name="Total_Bricks_Count" type="integer">180</item>
+</resources>

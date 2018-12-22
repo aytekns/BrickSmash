@@ -1,0 +1,23 @@
+<resources>
+
+    <dimen name="Ball_R">7dp</dimen>
+    <dimen name="Ball_X">175dp</dimen>
+    <dimen name="Ball_Y">430dp</dimen>
+    <dimen name="Base_W">60dp</dimen>
+    <dimen name="Base_H">11dp</dimen>
+    <dimen name="Base_X">145dp</dimen>
+    <dimen name="Base_Y">437dp</dimen>
+    <dimen name="Brick_W">34dp</dimen>
+    <dimen name="Brick_H">15dp</dimen>
+    <dimen name="Pack_W">58dp</dimen>
+    <dimen name="Pack_H">58dp</dimen>
+    <dimen name="Bullet_W">8dp</dimen>
+    <dimen name="Bullet_H">28dp</dimen>
+    <dimen name="bricks_start_pos_x">27dp</dimen>
+    <dimen name="bricks_start_pos_y">27dp</dimen>
+    <item format="integer" name="Ball_Avg_Angle" type="integer">2</item>
+    <item format="integer" name="Ball_Low_Angle" type="integer">1</item>
+    <item format="integer" name="Ball_High_Angle" type="integer">3</item>
+    <item format="integer" name="Base_Speed" type="integer">1</item>
+    
+</resources>
