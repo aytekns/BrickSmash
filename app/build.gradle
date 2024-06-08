@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.android.bricksmash"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion 24
+        //noinspection EditedTargetSdkVersion
+        targetSdkVersion 34
     }
 
     buildTypes {
@@ -16,4 +16,5 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    namespace 'com.android.bricksmash'
 }
