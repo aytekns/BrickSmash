@@ -20,14 +20,7 @@ import android.view.WindowManager;
 @SuppressLint("DefaultLocale")
 public class MainActivity extends Activity 
 {
-	private MainAppView 	m_oMainView;
-	private BallsThread 	m_oBallsAnimThread;
-	private BaseThread 		m_oBaseAnimThread;
-	private BricksThread	m_oBricksAnimThread;
-    private PacksThread     m_oPacksAnimThread;
-	private BulletsThread	m_oBulletsAnimThread;
-
-	private boolean m_bIsCreated;
+    private boolean m_bIsCreated;
 
 	public MainActivity()
 	{
@@ -35,6 +28,7 @@ public class MainActivity extends Activity
 		m_bIsCreated = false;
 	}
 
+	@SuppressLint("SourceLockedOrientationActivity")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
@@ -73,7 +67,7 @@ public class MainActivity extends Activity
 		
 		// Create Bricks and BricksView.
 		int nLastIndx = 0;
-		Brick oBricks[] = new Brick[getResources().getInteger(R.integer.Total_Bricks_Count)];
+		Brick[] oBricks = new Brick[getResources().getInteger(R.integer.Total_Bricks_Count)];
 		for (int j=0, nYPos=nStartYPos; j<nMatrixH; nYPos = oBricks[nLastIndx].getBottom(), j++)
 		{
 			for (int i=0, nXPos=nStartXPos; i<nMatrixW; nXPos = oBricks[nLastIndx].getRight(), i++)
@@ -95,16 +89,16 @@ public class MainActivity extends Activity
 		MsgView oMsgView = new MsgView(this, oDispEnd);
 		
 		// Create application view
-		m_oMainView = new MainAppView(this);
-		m_oMainView.addView(oBallsView);
-		m_oMainView.addView(oBaseView);
-		m_oMainView.addView(oBricksView);
-        m_oMainView.addView(oPacksView);
-		m_oMainView.addView(oBulletsView);
-		m_oMainView.addView(oMsgView);
+        MainAppView mainAppView = new MainAppView(this);
+		mainAppView.addView(oBallsView);
+		mainAppView.addView(oBaseView);
+		mainAppView.addView(oBricksView);
+        mainAppView.addView(oPacksView);
+		mainAppView.addView(oBulletsView);
+		mainAppView.addView(oMsgView);
 		
 		// Set Content View (not using the activity XML content)
-		setContentView(m_oMainView);
+		setContentView(mainAppView);
 
 		// Initialize action bar
 		ActionBar actionBar = getActionBar();
@@ -138,7 +132,7 @@ public class MainActivity extends Activity
 	    
         // Initialize the game logic manager
 	    GameLogics.Instance().setApplicationContext(getApplicationContext());
-		GameLogics.Instance().setGameMainView(m_oMainView);
+		GameLogics.Instance().setGameMainView(mainAppView);
         GameLogics.Instance().setGameBallsView(oBallsView);
         GameLogics.Instance().setGameBase(oBase);
         GameLogics.Instance().setGameBricks(oBricks);
@@ -149,24 +143,24 @@ public class MainActivity extends Activity
         GameLogics.Instance().resetGame();
 
 		// Create and run the thread in which ball animation is implemented
-		m_oBallsAnimThread = new BallsThread(oBallsView);
-		m_oBallsAnimThread.start();
+        BallsThread ballsThread = new BallsThread(oBallsView);
+		ballsThread.start();
 		
 		// Create and run the thread in which base animation is implemented
-		m_oBaseAnimThread = new BaseThread(oBase, oBaseView);
-		m_oBaseAnimThread.start();
+        BaseThread baseThread = new BaseThread(oBase, oBaseView);
+		baseThread.start();
 		
 		// Create and run the thread in which bricks animation is implemented
-		m_oBricksAnimThread = new BricksThread(oBricks, oBricksView);
-		m_oBricksAnimThread.start();
+        BricksThread bricksThread = new BricksThread(oBricks, oBricksView);
+		bricksThread.start();
 
         // Create and run the thread in which packs animation is implemented
-        m_oPacksAnimThread = new PacksThread(oPacksView);
-        m_oPacksAnimThread.start();
+        PacksThread packsThread = new PacksThread(oPacksView);
+        packsThread.start();
 
 		// Create and run the thread in which bullets animation is implemented
-		m_oBulletsAnimThread = new BulletsThread(oBulletsView);
-		m_oBulletsAnimThread.start();
+        BulletsThread bulletsThread = new BulletsThread(oBulletsView);
+		bulletsThread.start();
 	}
 
 	@Override
@@ -177,6 +171,7 @@ public class MainActivity extends Activity
 		return true;
 	}
 	
+	@SuppressLint("NonConstantResourceId")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -277,7 +272,7 @@ public class MainActivity extends Activity
 	{		
 		// Version alert dialog box
 		AlertDialog.Builder versionInfo = new AlertDialog.Builder(this);
-        String versionName = "2.0.0";//BuildConfig.VERSION_NAME;
+        String versionName = "2024.6.1";//BuildConfig.VERSION_NAME;
 		
 		// Version info
 		versionInfo.setTitle(R.string.app_name);

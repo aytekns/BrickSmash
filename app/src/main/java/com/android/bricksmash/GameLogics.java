@@ -1,19 +1,15 @@
 package com.android.bricksmash;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
-import android.view.ViewConfiguration;
 import android.view.WindowManager;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 
 /*
@@ -48,14 +44,14 @@ public class GameLogics
 	private MainAppView m_oMainView;
 
 	// Game balls view
-	private BallsView 	m_oBallsView;
+	private BallsView m_oBallsView;
 	
 	// Game base
-	private Base 	m_oBase;
+	private Base m_oBase;
 	
 	// Game bricks
-	private int 	m_nBricksLeft;		// Number of visible bricks left
-	private Brick 	m_oBrick[];			// Bricks array
+	private int	m_nBricksLeft;		// Number of visible bricks left
+	private Brick[] m_oBrick;			// Bricks array
 
 	// Game packs view
 	private PacksView m_oPacksView;
@@ -81,8 +77,8 @@ public class GameLogics
 	private int m_nCurrentLevel;
 	
 	// Timer ability (in the form of handler and runnable)
-	private Handler m_oTimerHandler;
-	private Runnable m_oTimerTaskRunnable;
+	private final Handler m_oTimerHandler;
+	private final Runnable m_oTimerTaskRunnable;
 	
 	// Timer counters
 	private float m_fTimerRepCounter;
@@ -119,7 +115,7 @@ public class GameLogics
             createNewBullets();
 
 		if (m_fTimerRepCounter <= SECS_TO_SPEED_UP_BALL)
-			m_fTimerRepCounter += 0.5;
+			m_fTimerRepCounter += 0.5F;
 
 		if (m_fTimerRepCounter == SECS_TO_RELEASE_BALL)
 			setMoveAllowed(true);
@@ -129,7 +125,7 @@ public class GameLogics
 
 		// Check to see if I need to count seconds to kill activity
 		if (m_fTimerEndCounter >= 0)
-			m_fTimerEndCounter += 0.5;
+			m_fTimerEndCounter += 0.5F;
 		
 		if (m_fTimerEndCounter >= SECS_TO_KILL_APP)
 		{
@@ -195,10 +191,8 @@ public class GameLogics
 		if (m_bIsMoveAllowed)
 		{
             // Check every ball in game with base
-            Iterator<Ball> it = m_oBallsView.getBallList().iterator();
-            while(it.hasNext())
-            {
-                Ball oBall = it.next();
+            for (Ball oBall : m_oBallsView.getBallList())
+			{
                 checkBallBase(oBall);
             }
 		}
@@ -696,7 +690,7 @@ public class GameLogics
             }
             catch (ArrayIndexOutOfBoundsException ex)
             {
-                ex.printStackTrace();
+                System.out.println(ex.getMessage());
             }
         }
     }
@@ -845,7 +839,7 @@ public class GameLogics
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			System.out.println(ex.getMessage());
 			return;
 		}
 		
@@ -924,7 +918,7 @@ public class GameLogics
 	public void setGameBase(Base base) { m_oBase = base; }
 	
 	// Sets the game bricks. Game will not work without initializing this member
-	public void setGameBricks(Brick brick[])
+	public void setGameBricks(Brick[] brick)
     {
 		m_oBrick = new Brick[m_oAppContext.getResources().getInteger(R.integer.Total_Bricks_Count)];
 		System.arraycopy(brick, 0, m_oBrick, 0, brick.length);
@@ -953,35 +947,20 @@ public class GameLogics
 	{
 		if (m_nHasSWKeys < 0)
 		{
-			if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
-			{
-				m_nHasSWKeys = 0;
-				return false;
-			}
+			Display d = ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+			DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+			d.getRealMetrics(realDisplayMetrics);
 
-			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-			{
-				Display d = ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-				DisplayMetrics realDisplayMetrics = new DisplayMetrics();
-				d.getRealMetrics(realDisplayMetrics);
+			int nRealHeight = realDisplayMetrics.heightPixels;
+			int nRealWidth = realDisplayMetrics.widthPixels;
 
-				int nRealHeight = realDisplayMetrics.heightPixels;
-				int nRealWidth = realDisplayMetrics.widthPixels;
+			DisplayMetrics displayMetrics = new DisplayMetrics();
+			d.getMetrics(displayMetrics);
 
-				DisplayMetrics displayMetrics = new DisplayMetrics();
-				d.getMetrics(displayMetrics);
+			int nDisplayHeight = displayMetrics.heightPixels;
+			int nDisplayWidth = displayMetrics.widthPixels;
 
-				int nDisplayHeight = displayMetrics.heightPixels;
-				int nDisplayWidth = displayMetrics.widthPixels;
-
-				m_nHasSWKeys = ((nRealWidth > nDisplayWidth) || (nRealHeight > nDisplayHeight)) ? 1 : 0;
-			}
-			else
-			{
-				boolean hasMenuKey = ViewConfiguration.get(ctx).hasPermanentMenuKey();
-				boolean hasBackKey = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK);
-				m_nHasSWKeys = (!hasMenuKey && !hasBackKey) ? 1 : 0;
-			}
+			m_nHasSWKeys = ((nRealWidth > nDisplayWidth) || (nRealHeight > nDisplayHeight)) ? 1 : 0;
 		}
 
 		return (m_nHasSWKeys == 1);
