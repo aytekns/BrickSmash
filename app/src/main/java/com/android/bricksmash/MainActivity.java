@@ -272,7 +272,7 @@ public class MainActivity extends Activity
 	{		
 		// Version alert dialog box
 		AlertDialog.Builder versionInfo = new AlertDialog.Builder(this);
-        String versionName = "2024.6.1";//BuildConfig.VERSION_NAME;
+        String versionName = "2024.6.2";//BuildConfig.VERSION_NAME;
 		
 		// Version info
 		versionInfo.setTitle(R.string.app_name);

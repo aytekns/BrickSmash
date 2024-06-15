@@ -63,3 +63,8 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
+
+#internal python project files
+screens_layout/.idea
+screens_layout/*.xml
+screens_layout/~$*

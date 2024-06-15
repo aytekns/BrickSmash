@@ -20,7 +20,7 @@ import java.util.Locale;
 public class GameLogics 
 {
 	// Maximum number of game levels
-	public final static int MAX_LEVEL_NUMBER = 11;
+	public final static int MAX_LEVEL_NUMBER = 12;
 	
 	// Period of time (in secs) to release ball
 	public final static int SECS_TO_RELEASE_BALL = 10;
